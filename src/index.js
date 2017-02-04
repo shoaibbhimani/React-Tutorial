@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import './index.css';
+import TodoItem from './components/TodoItem.js';
+import TodoForm from './components/TodoForm.js';
 
 class TodoList extends React.Component {
   constructor(){
     super();
     this.changeStatus = this.changeStatus.bind(this);
+    this.updateTask = this.updateTask.bind(this);
+    this.addTask = this.addTask.bind(this);
     this.state = {
       tasks:[{
         name:"Buy Milk",
@@ -18,9 +22,33 @@ class TodoList extends React.Component {
       {
         name:"Buy Bread",
         completed:false
-      }] 
+      }],
+      currentTask:'' 
     }
  }
+
+addTask(evt){
+  evt.preventDefault();
+  let tasks = this.state.tasks;
+  let currentTask = this.state.currentTask;
+  tasks.push({
+    name:currentTask,
+    completed:false
+  })
+
+  this.setState({
+    tasks,
+    currentTask:'' 
+  })
+
+
+}
+updateTask(newValue){
+  this.setState({
+    currentTask:newValue.target.value
+  })
+}
+
 
 changeStatus(index){
  var tasks = this.state.tasks;
@@ -32,30 +60,26 @@ changeStatus(index){
 }
  render() {
     return (
-      <ul>
-      {
-        this.state.tasks.map((task, index) => {
-          return <TodoItem key={task.name} clickHandler={this.changeStatus} index={index} details={task} />
-        })
-      }
-        
-      </ul>
+      <section>
+       <TodoForm 
+            currentTask={this.state.currentTask}
+            updateTask={this.updateTask}
+            addTask={this.addTask}
+        />
+        <ul>
+        {
+          this.state.tasks.map((task, index) => {
+            return <TodoItem key={task.name} clickHandler={this.changeStatus} index={index} details={task} />
+          })
+        }
+          
+        </ul>
+      </section>
     )
   }
 }
 
-class TodoItem extends React.Component {
-  render(){
-    return (
-      <li onClick={ () => {
-        this.props.clickHandler(this.props.index);
-      }} className={this.props.details.completed ? 'completed' : 
-    ''}>
-        {this.props.details.name}
-      </li>
-    )
-  }
-}
+
 
 ReactDOM.render(<TodoList />,document.getElementById('root'))
 
