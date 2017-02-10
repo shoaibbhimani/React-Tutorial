@@ -11,6 +11,7 @@ class TodoList extends React.Component {
     this.updateTask = this.updateTask.bind(this);
     this.addTask = this.addTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
+    this.editTask = this.editTask.bind(this);
     this.state = {
       tasks:[{
         name:"Buy Milk",
@@ -60,6 +61,15 @@ updateTask(newValue){
   })
 }
 
+editTask(index, newValue){
+ var tasks = this.state.tasks;
+ var task = tasks[index];
+ task['name'] = newValue;
+ this.setState({
+  tasks
+ })
+}
+
 
 changeStatus(index){
  var tasks = this.state.tasks;
@@ -81,11 +91,13 @@ changeStatus(index){
         {
           this.state.tasks.map((task, index) => {
             return <TodoItem 
-                    key={task.name} 
+                    key={index} 
                     clickHandler={this.changeStatus} 
                     index={index} 
                     deleteTask={this.deleteTask}
-                    details={task} />
+                    editTask={this.editTask}
+                    details={task}
+                     />
           })
         }
           
