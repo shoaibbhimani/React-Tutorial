@@ -1,113 +1,139 @@
-import React from 'react';
+import React,{ Children } from 'react';
 import ReactDOM from 'react-dom'
 import './index.css';
 import TodoItem from './components/TodoItem.js';
 import TodoForm from './components/TodoForm.js';
 
 class TodoList extends React.Component {
-  constructor(){
-    super();
-    this.changeStatus = this.changeStatus.bind(this);
-    this.updateTask = this.updateTask.bind(this);
-    this.addTask = this.addTask.bind(this);
-    this.deleteTask = this.deleteTask.bind(this);
-    this.editTask = this.editTask.bind(this);
-    this.state = {
-      tasks:[{
-        name:"Buy Milk",
-        completed:false
-      },
-      {
-        name:"Buy Cheese",
-        completed:false
-      },
-      {
-        name:"Buy Bread",
-        completed:false
-      }],
-      currentTask:'' 
-    }
- }
+constructor(){
+  super();
+  this.changeStatus = this.changeStatus.bind(this);
+  this.updateTask = this.updateTask.bind(this);
+  this.addTask = this.addTask.bind(this);
+  this.deleteTask = this.deleteTask.bind(this);
+  this.editTask = this.editTask.bind(this);
+  this.state = {
+    tasks:[{
+      name:"Buy Milk",
+      completed:false
+    },
+    {
+      name:"Buy Cheese",
+      completed:false
+    },
+    {
+      name:"Buy Bread",
+      completed:false
+    }],
+    currentTask:'' 
+  }
+}
 deleteTask(index){
-  console.log(index)
+console.log(index)
 
-  let tasks = this.state.tasks;
-  tasks.splice(index,1);
+let tasks = this.state.tasks;
+tasks.splice(index,1);
 
-  this.setState({
-    tasks
-  })
-  
+this.setState({
+  tasks
+})
+
 }
 addTask(evt){
-  evt.preventDefault();
-  let tasks = this.state.tasks;
-  let currentTask = this.state.currentTask;
-  tasks.push({
-    name:currentTask,
-    completed:false
-  })
+evt.preventDefault();
+let tasks = this.state.tasks;
+let currentTask = this.state.currentTask;
+tasks.push({
+  name:currentTask,
+  completed:false
+})
 
-  this.setState({
-    tasks,
-    currentTask:'' 
-  })
+this.setState({
+  tasks,
+  currentTask:'' 
+})
 
 
 }
 updateTask(newValue){
-  this.setState({
-    currentTask:newValue.target.value
-  })
+this.setState({
+  currentTask:newValue.target.value
+})
 }
 
 editTask(index, newValue){
- var tasks = this.state.tasks;
- var task = tasks[index];
- task['name'] = newValue;
- this.setState({
-  tasks
- })
+var tasks = this.state.tasks;
+var task = tasks[index];
+task['name'] = newValue;
+this.setState({
+tasks
+})
 }
 
 
 changeStatus(index){
- var tasks = this.state.tasks;
- var task = tasks[index];
- task.completed = !task.completed;
- this.setState({
-   tasks:tasks
- })
+var tasks = this.state.tasks;
+var task = tasks[index];
+task.completed = !task.completed;
+this.setState({
+ tasks:tasks
+})
 }
- render() {
+render() {
+  return (
+    <section>
+     <TodoForm 
+          currentTask={this.state.currentTask}
+          updateTask={this.updateTask}
+          addTask={this.addTask}
+      />
+      <ul>
+      {
+        this.state.tasks.map((task, index) => {
+          return <TodoItem 
+                  key={index} 
+                  clickHandler={this.changeStatus} 
+                  index={index} 
+                  deleteTask={this.deleteTask}
+                  editTask={this.editTask}
+                  details={task}
+                   />
+        })
+      }
+        
+      </ul>
+    </section>
+  )
+}
+}
+
+
+import $ from 'jquery';
+
+class App extends React.Component {
+  constructor(props){
+    super(props);
+  }
+
+
+  render(){
     return (
       <section>
-       <TodoForm 
-            currentTask={this.state.currentTask}
-            updateTask={this.updateTask}
-            addTask={this.addTask}
-        />
-        <ul>
-        {
-          this.state.tasks.map((task, index) => {
-            return <TodoItem 
-                    key={index} 
-                    clickHandler={this.changeStatus} 
-                    index={index} 
-                    deleteTask={this.deleteTask}
-                    editTask={this.editTask}
-                    details={task}
-                     />
-          })
-        }
-          
-        </ul>
-      </section>
+        <Demo>
+        <section>
+          <p>dasdasd</p>
+          <p>dasdasd</p>
+          <p>dasdasd</p>
+        </section>
+        </Demo>
+      </section> 
     )
   }
 }
 
+const Demo = ({ children }) => (
+  <h1>{Children.count(children)}</h1>
+)
 
-
-ReactDOM.render(<TodoList />,document.getElementById('root'))
+ReactDOM.render(<App />,document.getElementById('root'))
 
