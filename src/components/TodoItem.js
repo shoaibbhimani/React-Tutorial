@@ -1,7 +1,7 @@
-import React from 'react';
+import React,{ Component as c, PropTypes as t } from 'react';
+import bindfunc from '../util.js'
 
-
-class TodoItem extends React.Component {
+class TodoItem extends c {
   constructor(props){
     super(props);
 
@@ -9,10 +9,12 @@ class TodoItem extends React.Component {
       isEditing:false
     }
 
-    this.renderForm = this.renderForm.bind(this);
-    this.renderItem = this.renderItem.bind(this);
-    this.toggleState = this.toggleState.bind(this);
-    this.updateItem = this.updateItem.bind(this);
+    // this.renderForm = this.renderForm.bind(this);
+    // this.renderItem = this.renderItem.bind(this);
+    // this.toggleState = this.toggleState.bind(this);
+    // this.updateItem = this.updateItem.bind(this);
+
+    bindfunc.call(this,['renderForm','renderItem','toggleState','updateItem','newfunc'])
   }
   
   toggleState(){
@@ -20,6 +22,10 @@ class TodoItem extends React.Component {
     this.setState({
       isEditing:!isEditing
     })
+  }
+
+  newfunc(){
+
   }
 
   updateItem(evt){
@@ -72,11 +78,11 @@ class TodoItem extends React.Component {
 }
 
 TodoItem.propTypes = {
-  clickHandler: React.PropTypes.func.isRequired,
-  index:React.PropTypes.number.isRequired,
-  deleteTask:React.PropTypes.func.isRequired,
-  editTask:React.PropTypes.func.isRequired,
-  details:React.PropTypes.object.isRequired
+  clickHandler: t.func.isRequired,
+  index:t.number.isRequired,
+  deleteTask:t.func.isRequired,
+  editTask:t.func.isRequired,
+  details:t.object.isRequired
 }
 
 

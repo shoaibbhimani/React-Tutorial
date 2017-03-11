@@ -4,14 +4,19 @@ import './index.css';
 import TodoItem from './components/TodoItem.js';
 import TodoForm from './components/TodoForm.js';
 
+import bindfunc from './util.js'
+
 class TodoList extends React.Component {
   constructor(){
     super();
-    this.changeStatus = this.changeStatus.bind(this);
-    this.updateTask = this.updateTask.bind(this);
-    this.addTask = this.addTask.bind(this);
-    this.deleteTask = this.deleteTask.bind(this);
-    this.editTask = this.editTask.bind(this);
+    // this.changeStatus = this.changeStatus.bind(this);
+    // this.updateTask = this.updateTask.bind(this);
+    // this.addTask = this.addTask.bind(this);
+    // this.deleteTask = this.deleteTask.bind(this);
+    // this.editTask = this.editTask.bind(this);
+
+    bindfunc.call(this,['changeStatus','updateTask','addTask','deleteTask','editTask'])
+
     this.state = {
       tasks:[{
         name:"Buy Milk",
