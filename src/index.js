@@ -1,118 +1,62 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import './index.css';
-import TodoItem from './components/TodoItem.js';
-import TodoForm from './components/TodoForm.js';
+import $ from 'jquery'
 
-import bindfunc from './util.js'
-
-class TodoList extends React.Component {
+class Fetch extends React.Component {
   constructor(){
-    super();
-    // this.changeStatus = this.changeStatus.bind(this);
-    // this.updateTask = this.updateTask.bind(this);
-    // this.addTask = this.addTask.bind(this);
-    // this.deleteTask = this.deleteTask.bind(this);
-    // this.editTask = this.editTask.bind(this);
-
-    bindfunc.call(this,['changeStatus','updateTask','addTask','deleteTask','editTask'])
-
+    super()
     this.state = {
-      tasks:[{
-        name:"Buy Milk",
-        completed:false
-      },
-      {
-        name:"Buy Cheese",
-        completed:false
-      },
-      {
-        name:"Buy Bread",
-        completed:false
-      }],
-      currentTask:'' 
+      content:[]
     }
- }
-deleteTask(index){
-  console.log(index)
-
-  let tasks = this.state.tasks;
-  tasks.splice(index,1);
-
-  this.setState({
-    tasks
-  })
-  
-}
-addTask(evt){
-  evt.preventDefault();
-  let tasks = this.state.tasks;
-  let currentTask = this.state.currentTask;
-  tasks.push({
-    name:currentTask,
-    completed:false
-  })
-
-  this.setState({
-    tasks,
-    currentTask:'' 
-  })
-
-
-}
-updateTask(newValue){
-  this.setState({
-    currentTask:newValue.target.value
-  })
-}
-
-editTask(index, newValue){
- var tasks = this.state.tasks;
- var task = tasks[index];
- task['name'] = newValue;
- this.setState({
-  tasks
- })
-}
-
-
-changeStatus(index){
- var tasks = this.state.tasks;
- var task = tasks[index];
- task.completed = !task.completed;
- this.setState({
-   tasks:tasks
- })
-}
- render() {
+  }
+  componentDidMount(){
+    $.ajax({
+      url:this.props.url,
+      success:(data) => {
+        this.setState({
+          content:data
+        })
+      },
+      error:(err) => {
+        console.log("err", err)
+      }
+    })
+  }
+  render(){
     return (
       <section>
-       <TodoForm 
-            currentTask={this.state.currentTask}
-            updateTask={this.updateTask}
-            addTask={this.addTask}
-        />
-        <ul>
-        {
-          this.state.tasks.map((task, index) => {
-            return <TodoItem 
-                    key={index} 
-                    clickHandler={this.changeStatus} 
-                    index={index} 
-                    deleteTask={this.deleteTask}
-                    editTask={this.editTask}
-                    details={task}
-                     />
-          })
-        }
-          
-        </ul>
+         {this.props.children(this.state.content)} 
       </section>
     )
   }
 }
 
+Fetch.propTypes = {
+  url:React.PropTypes.string.isRequired
+}
 
-
-ReactDOM.render(<TodoList />,document.getElementById('root'))
+class App extends React.Component {
+  render(){
+    return (
+      <section>
+         <Fetch url="https://jsonplaceholder.typicode.com/posts">
+           {(data) => {
+              return data.map((value, index) => {
+                return <li key={index}>{value.title}</li>
+              })
+           }}
+         </Fetch>
+          User
+         <Fetch url="https://jsonplaceholder.typicode.com/users">
+           {(data) => {
+              return data.map((value, index) => {
+                return <li key={index}>{value.name}</li>
+              })
+           }}
+         </Fetch>
+      </section>
+    )
+  }
+}
+ReactDOM.render(<App />,document.getElementById('root'))
 
