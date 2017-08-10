@@ -12,8 +12,8 @@ if you dont like my course you can have 30 days refund policy of Udemy so you re
 
 I have planned many awesome content for this course here is the list of few of them
 
-Learn and Understanding Redux
-Server side Rendering in Nextjs
+- Learn and Understanding Redux
+- Server side Rendering in Nextjs
 
 ## Table of Contents
 
