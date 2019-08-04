@@ -11,4 +11,4 @@ https://www.udemy.com/learn-reactjs-fundamentals-in-hindi-urdu/learn/v4/?couponC
 - you will learn Mobx - State mangement library we will make 2 Project using React, React Router V4 & Mobx
 - Learn and Understanding Redux
 
-# if you dont like my course you can have 30 days refund policy of Udemy so you really dont have anything to loose
+### if you dont like my course you can have 30 days refund policy of Udemy so you really dont have anything to loose
